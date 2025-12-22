@@ -5,6 +5,8 @@ use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -84,4 +86,23 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
+Route::get('/debug-siap-pakai', function () {
+    // 1. Bersihkan cache biar CSS rapi
+    Artisan::call('view:clear');
+    Artisan::call('config:clear');
+
+    // 2. Buat Admin (Cek dulu biar gak double)
+    $admin = User::where('email', 'admin@gmail.com')->first();
+    if (!$admin) {
+        User::create([
+            'name'     => 'Admin E-Layak',
+            'email'    => 'admin@gmail.com',
+            'password' => Hash::make('admin123'), // Ini akan jadi hash otomatis
+            'role'     => 'admin',
+            'nim'      => '123456', // Sesuaikan kolom wajibmu
+        ]);
+        return "Efek: Cache dibersihkan & Admin 'admin@gmail.com' dibuat dengan password 'admin123'";
+    }
+    return "Admin sudah ada, cache telah dibersihkan.";
+});
 require __DIR__.'/auth.php';
