@@ -20,7 +20,8 @@
 
         @include('sidebar')
 
-        <main class="flex-1 flex flex-col overflow-hidden bg-gray-50 lg:ml-[260px] transition-all duration-300">
+        <main class="flex-1 flex flex-col overflow-hidden bg-gray-50 lg:ml-[260px] transition-all duration-300"
+            x-data="{ search: '' }">
 
             <header class="bg-white shadow-sm h-16 flex items-center justify-between px-4 md:px-6 z-20 relative">
                 <h2 class="text-lg md:text-xl font-bold text-gray-800 tracking-tight truncate">Laporan & Riwayat</h2>
@@ -28,7 +29,7 @@
                 <div class="flex items-center gap-4">
                     <div class="relative ml-4" x-data="{ open: false }">
                         <button @click="open = !open" class="flex items-center gap-3 focus:outline-none transition">
-                            <div class="text-right hidden sm:block">
+                            <div class="text-right hidden md:block">
                                 <div class="text-sm font-semibold text-gray-800">{{ Auth::user()->name }}</div>
                                 <div class="text-[10px] text-gray-500 uppercase">{{ Auth::user()->role }}</div>
                             </div>
@@ -52,16 +53,30 @@
 
             <div class="flex-1 overflow-y-auto p-4 md:p-8">
 
-                <div class="mb-6 px-2">
-                    <h3 class="text-lg md:text-xl font-bold text-gray-800">Laporan yang Telah Selesai</h3>
-                    <p class="text-xs md:text-sm text-gray-500">Daftar riwayat aduan dan pelayanan yang sudah ditangani
-                        secara sistem.</p>
+                <div class="mb-6 px-2 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-800">Laporan yang Telah Selesai</h3>
+                        <p class="text-xs md:text-sm text-gray-500">Daftar riwayat aduan dan pelayanan yang sudah
+                            ditangani secara sistem.</p>
+                    </div>
+
+                    <div class="relative w-full md:w-80">
+                        <input type="text" x-model="search"
+                            class="block w-full pl-4 pr-10 py-2 border border-gray-300 rounded-xl focus:ring-blue-500 focus:border-blue-500 shadow-sm text-sm"
+                            placeholder="Cari email atau judul laporan...">
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="space-y-4">
 
                     @forelse($laporan as $item)
-                        <div
+                        <div x-show="!search ||
+                                    '{{ strtolower($item->judul ?? $item->kebutuhan) }}'.includes(search.toLowerCase()) ||
+                                    '{{ strtolower($item->user->email ?? '') }}'.includes(search.toLowerCase()) ||
+                                    '{{ isset($item->judul) ? 'aduan' : 'pelayanan' }}'.includes(search.toLowerCase())"
                             class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 md:p-6 flex flex-col md:flex-row items-center gap-4 md:gap-6 hover:shadow-md transition relative overflow-hidden">
 
                             <div

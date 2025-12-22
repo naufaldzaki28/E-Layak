@@ -20,7 +20,8 @@
 
         @include('sidebar')
 
-        <main class="flex-1 flex flex-col overflow-hidden bg-gray-50 lg:ml-[260px] transition-all duration-300">
+        <main class="flex-1 flex flex-col overflow-hidden bg-gray-50 lg:ml-[260px] transition-all duration-300"
+            x-data="{ search: '' }">
 
             <header class="bg-white shadow-sm h-16 flex items-center justify-between px-4 md:px-6 z-20 relative">
                 <h2 class="text-lg md:text-xl font-bold text-gray-800 tracking-tight truncate">Kelola Aduan Fasilitas
@@ -56,9 +57,9 @@
 
                 <div class="max-w-5xl mx-auto mb-6 md:mb-8">
                     <div class="relative">
-                        <input type="text"
+                        <input type="text" x-model="search"
                             class="block w-full pl-4 pr-10 py-2 md:py-3 border border-gray-300 rounded-xl focus:ring-blue-500 focus:border-blue-500 shadow-sm text-sm"
-                            placeholder="Cari aduan fasilitas...">
+                            placeholder="Cari aduan berdasarkan judul, lokasi, atau nama...">
                         <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                             <i class="fas fa-search text-gray-400"></i>
                         </div>
@@ -68,7 +69,10 @@
                 <div class="max-w-5xl mx-auto space-y-4">
 
                     @forelse($aduan as $item)
-                        <div
+                        <div x-show="!search ||
+                                    '{{ strtolower($item->judul) }}'.includes(search.toLowerCase()) ||
+                                    '{{ strtolower($item->lokasi) }}'.includes(search.toLowerCase()) ||
+                                    '{{ strtolower($item->user->name ?? '') }}'.includes(search.toLowerCase())"
                             class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 md:p-5 flex flex-col md:flex-row gap-4 md:gap-6 items-start hover:shadow-md transition">
 
                             <div
@@ -133,34 +137,30 @@
                             </div>
 
                             <div class="flex flex-row md:flex-col gap-2 w-full md:w-auto min-w-[140px] mt-2 md:mt-0">
-
                                 @if ($item->status == 'pending')
                                     <form action="{{ route('admin.aduan.update', $item->id) }}" method="POST"
                                         class="flex-1">
-                                        @csrf
-                                        @method('PATCH')
+                                        @csrf @method('PATCH')
                                         <input type="hidden" name="status" value="diproses">
                                         <button type="submit"
                                             class="w-full px-4 py-2 bg-blue-600 text-white text-xs font-semibold rounded-lg hover:bg-blue-700 transition flex items-center justify-center gap-2">
-                                            <i class="fas fa-hammer"></i> <span class="md:inline">Proses</span>
+                                            <i class="fas fa-hammer"></i> <span>Proses</span>
                                         </button>
                                     </form>
-
                                     <form action="{{ route('admin.aduan.update', $item->id) }}" method="POST"
                                         class="flex-1" onsubmit="return confirm('Yakin ingin menolak laporan ini?')">
-                                        @csrf
-                                        @method('PATCH')
+                                        @csrf @method('PATCH')
                                         <input type="hidden" name="status" value="ditolak">
                                         <button type="submit"
                                             class="w-full px-4 py-2 bg-white text-red-600 border border-red-200 text-xs font-semibold rounded-lg hover:bg-red-50 transition flex items-center justify-center gap-2">
-                                            <i class="fas fa-ban"></i> <span class="md:inline">Tolak</span>
+                                            <i class="fas fa-ban"></i> <span>Tolak</span>
                                         </button>
                                     </form>
                                 @elseif($item->status == 'diproses')
                                     <form action="{{ route('admin.aduan.update', $item->id) }}" method="POST"
-                                        class="w-full" onsubmit="return confirm('Tandai laporan ini sebagai selesai?')">
-                                        @csrf
-                                        @method('PATCH')
+                                        class="w-full"
+                                        onsubmit="return confirm('Tandai laporan ini sebagai selesai?')">
+                                        @csrf @method('PATCH')
                                         <input type="hidden" name="status" value="selesai">
                                         <button type="submit"
                                             class="w-full px-4 py-2 bg-green-600 text-white text-xs font-semibold rounded-lg hover:bg-green-700 transition flex items-center justify-center gap-2">
@@ -174,7 +174,6 @@
                                         <i class="fas fa-lock"></i> Terkunci
                                     </button>
                                 @endif
-
                             </div>
                         </div>
                     @empty
@@ -183,7 +182,6 @@
                             <p class="text-gray-500 font-medium">Belum ada aduan fasilitas yang masuk.</p>
                         </div>
                     @endforelse
-
                 </div>
             </div>
         </main>

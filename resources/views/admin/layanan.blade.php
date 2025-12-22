@@ -20,7 +20,8 @@
 
         @include('sidebar')
 
-        <main class="flex-1 flex flex-col overflow-hidden bg-gray-50 lg:ml-[260px] transition-all duration-300">
+        <main class="flex-1 flex flex-col overflow-hidden bg-gray-50 lg:ml-[260px] transition-all duration-300"
+            x-data="{ search: '' }">
 
             <header class="bg-white shadow-sm h-16 flex items-center justify-between px-4 md:px-6 z-20 relative">
                 <h2 class="text-lg md:text-xl font-bold text-gray-800 tracking-tight truncate">Kelola Pelayanan Kampus
@@ -56,9 +57,9 @@
 
                 <div class="max-w-5xl mx-auto mb-6 md:mb-8">
                     <div class="relative">
-                        <input type="text"
+                        <input type="text" x-model="search"
                             class="block w-full pl-4 pr-10 py-2 md:py-3 border border-gray-300 rounded-xl focus:ring-blue-500 focus:border-blue-500 shadow-sm text-sm"
-                            placeholder="Cari layanan...">
+                            placeholder="Cari berdasarkan nama mahasiswa atau jenis layanan...">
                         <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                             <i class="fas fa-search text-gray-400"></i>
                         </div>
@@ -68,7 +69,10 @@
                 <div class="max-w-5xl mx-auto space-y-4">
 
                     @forelse($layanan as $item)
-                        <div
+                        <div x-show="!search ||
+                                    '{{ strtolower($item->jenis_layanan) }}'.includes(search.toLowerCase()) ||
+                                    '{{ strtolower($item->user->name ?? '') }}'.includes(search.toLowerCase()) ||
+                                    '{{ strtolower($item->user->email ?? '') }}'.includes(search.toLowerCase())"
                             class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 md:p-5 flex flex-col md:flex-row gap-4 md:gap-6 items-start hover:shadow-md transition">
 
                             <div
