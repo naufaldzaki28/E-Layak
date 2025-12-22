@@ -11,6 +11,7 @@ use App\Models\PesanBantuan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AdminController extends Controller
 {
@@ -107,6 +108,24 @@ class AdminController extends Controller
         return view('admin.laporan', compact('laporan'));
     }
 
+    public function downloadSurat($id)
+{
+    // Ambil data aduan/layanan beserta usernya
+    // Sesuaikan nama model kamu (misal: Aduan atau Layanan)
+    $data = \App\Models\Layanan::with('user')->findOrFail($id); 
+
+    // Jika statusnya belum Success, jangan kasih download (opsional)
+    if($data->status !== 'Success') {
+        return back()->with('error', 'Surat hanya tersedia untuk permohonan yang disetujui.');
+    }
+
+    $pdf = Pdf::loadView('admin.surat_pdf', compact('data'));
+    
+    // Set kertas A4
+    $pdf->setPaper('A4', 'portrait');
+
+    return $pdf->download('Surat_Keterangan_'.$data->user->nim.'.pdf');
+}
     public function bantuan()
     {
         return view('admin.bantuan');
@@ -130,8 +149,7 @@ class AdminController extends Controller
 
         PesanBantuan::create($dataPesan);
 
-        // Matikan dulu kirim email kalau error SMTP, atau nyalakan jika sudah config
-        // Mail::to('dnaufal283@gmail.com')->send(new NotifikasiBantuan($dataPesan));
+    Mail::to('dnaufal283@gmail.com')->send(new NotifikasiBantuan($dataPesan));
 
         return redirect()->back()->with('success', 'Pesan terkirim!');
     }
