@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail; // <--- INI WAJIB ADA
+// 1. Hapus atau beri komentar pada baris ini
+// use Illuminate\Contracts\Auth\MustVerifyEmail; 
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-// Tambahkan "implements MustVerifyEmail" di baris bawah ini
-class User extends Authenticatable implements MustVerifyEmail
+// 2. Hapus bagian "implements MustVerifyEmail"
+class User extends Authenticatable 
 {
     use HasFactory, Notifiable;
 
@@ -21,7 +23,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
-        'role', // Pastikan ini ada!
+        'role', 
         'nim',
     ];
 
