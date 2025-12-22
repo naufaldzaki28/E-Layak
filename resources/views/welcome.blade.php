@@ -26,15 +26,8 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 20px;
-        }
-
-        .hero-section {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            text-align: center;
+            /* Padding lebih kecil di mobile agar teks tidak terlalu 'tercekik' */
+            padding: 80px 20px;
             background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("{{ asset('img/logonavbar.jpeg') }}");
             background-size: cover;
             background-position: center;
@@ -42,49 +35,60 @@
             color: #EBEAEA;
         }
 
+        /* Responsive Font Size untuk Judul */
         .hero-section h1 {
-            font-size: 2.5rem;
+            font-size: 2rem;
+            /* Ukuran HP */
             font-weight: 700;
             color: #EBEAEA;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-            /* Bayangan lebih kuat */
+            line-height: 1.2;
+        }
+
+        /* Ukuran judul untuk Laptop */
+        @media (min-width: 768px) {
+            .hero-section h1 {
+                font-size: 3.5rem;
+            }
         }
 
         .hero-section p.subtitle {
             color: #f3f4f6;
-            font-size: 1.1rem;
-            margin-bottom: 30px;
+            font-size: 1rem;
+            margin-bottom: 35px;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            max-width: 600px;
         }
 
-
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #1f2937;
-            margin-bottom: 10px;
-        }
-
-        p.subtitle {
-            color: #6b7280;
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-        }
-
+        /* Container Tombol */
         .btn-group {
             display: flex;
+            flex-direction: column;
+            /* Default HP: Tombol menumpuk */
             gap: 15px;
-            margin-bottom: 40px;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        /* Tombol sejajar di Laptop */
+        @media (min-width: 640px) {
+            .btn-group {
+                flex-direction: row;
+                max-width: none;
+                justify-content: center;
+            }
         }
 
         .btn {
-            padding: 12px 30px;
-            border-radius: 8px;
+            padding: 14px 35px;
+            border-radius: 12px;
+            /* Lebih bulat agar modern */
             font-weight: 600;
             text-decoration: none;
             transition: all 0.3s;
             cursor: pointer;
+            text-align: center;
         }
 
         .btn-masuk {
@@ -94,35 +98,38 @@
         }
 
         .btn-masuk:hover {
-            background-color: #f9fafb;
-            border-color: #9ca3af;
+            background-color: #ffffff;
+            transform: translateY(-2px);
         }
 
         .btn-daftar {
             background-color: #111827;
             color: #EBEAEA;
             border: 1px solid #111827;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
 
         .btn-daftar:hover {
             background-color: #374151;
+            transform: translateY(-2px);
         }
     </style>
 </head>
 
 <body>
 
-
     <div class="hero-section">
-
         <h1>Selamat Datang!</h1>
-        <p class="subtitle">Sistem Elektronik Layanan dan Aduan Fasilitas Kampus</p>
+        <p class="subtitle">Sistem Elektronik Layanan dan Aduan Fasilitas Kampus (E-Layak)</p>
 
         <div class="btn-group">
-            <a href="{{ route('login') }}" class="btn btn-masuk">Masuk</a>
-            <a href="{{ route('register') }}" class="btn btn-daftar">Daftar</a>
+            <a href="{{ route('login') }}" class="btn btn-masuk">
+                <i class="fas fa-sign-in-alt mr-2"></i> Masuk
+            </a>
+            <a href="{{ route('register') }}" class="btn btn-daftar">
+                <i class="fas fa-user-plus mr-2"></i> Daftar
+            </a>
         </div>
-
     </div>
 
     <?= view('footer') ?>

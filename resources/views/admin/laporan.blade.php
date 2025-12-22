@@ -20,20 +20,20 @@
 
         @include('sidebar')
 
-        <main class="flex-1 flex flex-col overflow-hidden bg-gray-50">
+        <main class="flex-1 flex flex-col overflow-hidden bg-gray-50 lg:ml-[260px] transition-all duration-300">
 
-            <header class="bg-white shadow-sm h-16 flex items-center justify-between px-6 z-20 relative">
-                <h2 class="text-xl font-bold text-gray-800 tracking-tight">Laporan & Riwayat</h2>
+            <header class="bg-white shadow-sm h-16 flex items-center justify-between px-4 md:px-6 z-20 relative">
+                <h2 class="text-lg md:text-xl font-bold text-gray-800 tracking-tight truncate">Laporan & Riwayat</h2>
 
                 <div class="flex items-center gap-4">
                     <div class="relative ml-4" x-data="{ open: false }">
                         <button @click="open = !open" class="flex items-center gap-3 focus:outline-none transition">
-                            <div class="text-right hidden md:block">
+                            <div class="text-right hidden sm:block">
                                 <div class="text-sm font-semibold text-gray-800">{{ Auth::user()->name }}</div>
-                                <div class="text-xs text-gray-500 uppercase">{{ Auth::user()->role }}</div>
+                                <div class="text-[10px] text-gray-500 uppercase">{{ Auth::user()->role }}</div>
                             </div>
                             <div
-                                class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center border-2 border-white shadow-sm overflow-hidden ring-2 ring-transparent hover:ring-blue-200 transition">
+                                class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center border-2 border-white shadow-sm overflow-hidden">
                                 <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=2563EB&color=fff"
                                     class="w-full h-full object-cover">
                             </div>
@@ -50,73 +50,81 @@
                 </div>
             </header>
 
-            <div class="flex-1 overflow-y-auto p-8">
+            <div class="flex-1 overflow-y-auto p-4 md:p-8">
 
-                <div class="max-w-4xl mx-auto mb-6">
-                    <h3 class="text-lg font-bold text-gray-800">Laporan yang Telah Selesai</h3>
-                    <p class="text-sm text-gray-500">Daftar riwayat aduan dan pelayanan yang sudah ditangani.</p>
+                <div class="mb-6 px-2">
+                    <h3 class="text-lg md:text-xl font-bold text-gray-800">Laporan yang Telah Selesai</h3>
+                    <p class="text-xs md:text-sm text-gray-500">Daftar riwayat aduan dan pelayanan yang sudah ditangani
+                        secara sistem.</p>
                 </div>
 
-                <div class="max-w-4xl mx-auto space-y-4">
+                <div class="space-y-4">
 
                     @forelse($laporan as $item)
                         <div
-                            class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 flex flex-col md:flex-row items-center gap-5 hover:shadow-md transition">
+                            class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 md:p-6 flex flex-col md:flex-row items-center gap-4 md:gap-6 hover:shadow-md transition relative overflow-hidden">
 
                             <div
-                                class="w-16 h-16 flex-shrink-0 bg-red-50 rounded-xl flex items-center justify-center border border-red-100">
-                                <i class="fas fa-file-pdf text-3xl text-red-500"></i>
+                                class="absolute left-0 top-0 h-full w-1 {{ $item->status == 'selesai' || $item->status == 'disetujui' ? 'bg-green-500' : 'bg-red-500' }}">
                             </div>
 
-                            <div class="flex-1 w-full">
-                                <div class="flex justify-between items-start">
-                                    <div>
-                                        <h4 class="text-lg font-bold text-gray-800">
+                            <div
+                                class="w-14 h-14 md:w-16 md:h-16 flex-shrink-0 bg-red-50 rounded-xl flex items-center justify-center border border-red-100">
+                                <i class="fas fa-file-pdf text-2xl md:text-3xl text-red-500"></i>
+                            </div>
+
+                            <div class="flex-1 w-full min-w-0">
+                                <div class="flex justify-between items-start gap-2">
+                                    <div class="min-w-0">
+                                        <h4 class="text-base md:text-lg font-bold text-gray-800 truncate"
+                                            title="{{ $item->judul ?? $item->kebutuhan }}">
                                             {{ $item->judul ?? $item->kebutuhan }}
                                         </h4>
-                                        <p class="text-sm text-gray-500 font-medium">
-                                            {{ $item->user->email ?? 'User Terhapus' }}</p>
+                                        <p class="text-xs md:text-sm text-gray-500 font-medium truncate">
+                                            {{ $item->user->email ?? 'User Terhapus' }}
+                                        </p>
                                     </div>
 
-                                    <div>
+                                    <div class="flex-shrink-0">
                                         @if ($item->status == 'selesai' || $item->status == 'disetujui')
                                             <span
-                                                class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">
-                                                Success
-                                            </span>
+                                                class="px-2 md:px-3 py-1 rounded-full text-[10px] md:text-xs font-bold bg-green-100 text-green-700">Success</span>
                                         @else
                                             <span
-                                                class="px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700">
-                                                Ditolak
-                                            </span>
+                                                class="px-2 md:px-3 py-1 rounded-full text-[10px] md:text-xs font-bold bg-red-100 text-red-700">Ditolak</span>
                                         @endif
                                     </div>
                                 </div>
 
-                                <div class="mt-2 flex items-center gap-4 text-xs text-gray-400">
-                                    <span>
-                                        <i class="far fa-calendar mr-1"></i>
-                                        Diselesaikan: {{ $item->updated_at->format('d M Y') }}
-                                    </span>
-                                    <span>
-                                        <i class="fas fa-tag mr-1"></i>
-                                        {{ isset($item->judul) ? 'Aduan Fasilitas' : 'Pelayanan Kampus' }}
-                                    </span>
+                                <div
+                                    class="mt-2 flex flex-wrap items-center gap-3 text-[10px] md:text-xs text-gray-400">
+                                    <span><i class="far fa-calendar mr-1"></i>
+                                        {{ $item->updated_at->format('d M Y') }}</span>
+                                    <span><i class="fas fa-tag mr-1"></i>
+                                        {{ isset($item->judul) ? 'Aduan Fasilitas' : 'Pelayanan Kampus' }}</span>
                                 </div>
                             </div>
 
-                            <div class="w-full md:w-auto">
-                                <button onclick="window.print()"
-                                    class="w-full md:w-auto px-6 py-2.5 bg-gray-900 text-white text-sm font-semibold rounded-lg hover:bg-gray-800 transition shadow-lg shadow-gray-200 flex items-center justify-center gap-2">
-                                    <i class="fas fa-download"></i>
-                                    Unduh
-                                </button>
+                            <div class="w-full md:w-auto mt-2 md:mt-0">
+                                @if ($item->status == 'selesai' || $item->status == 'disetujui')
+                                    <a href="{{ route('admin.laporan.download', $item->id) }}"
+                                        class="w-full md:w-auto px-6 py-2.5 bg-blue-600 text-white text-xs md:text-sm font-semibold rounded-xl hover:bg-blue-700 transition shadow-lg shadow-blue-100 flex items-center justify-center gap-2">
+                                        <i class="fas fa-file-pdf"></i>
+                                        Unduh PDF
+                                    </a>
+                                @else
+                                    <button disabled
+                                        class="w-full md:w-auto px-6 py-2.5 bg-gray-100 text-gray-400 text-xs md:text-sm font-semibold rounded-xl cursor-not-allowed flex items-center justify-center gap-2">
+                                        <i class="fas fa-ban"></i>
+                                        Unduh
+                                    </button>
+                                @endif
                             </div>
 
                         </div>
                     @empty
-                        <div class="text-center py-12 bg-white rounded-xl border border-dashed border-gray-300">
-                            <i class="fas fa-folder-open text-4xl text-gray-300 mb-3"></i>
+                        <div class="text-center py-20 bg-white rounded-2xl border border-dashed border-gray-200">
+                            <i class="fas fa-folder-open text-5xl text-gray-200 mb-4"></i>
                             <p class="text-gray-500 font-medium">Belum ada riwayat laporan yang selesai.</p>
                         </div>
                     @endforelse

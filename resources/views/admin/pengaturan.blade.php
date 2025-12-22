@@ -20,19 +20,19 @@
 
         @include('sidebar')
 
-        <main class="flex-1 flex flex-col overflow-hidden bg-gray-50">
+        <main class="flex-1 flex flex-col overflow-hidden bg-gray-50 lg:ml-[260px] transition-all duration-300">
 
-            <header class="bg-white shadow-sm h-16 flex items-center justify-between px-6 z-20 relative">
-                <h2 class="text-xl font-bold text-gray-800 tracking-tight">Pengaturan Akun</h2>
+            <header class="bg-white shadow-sm h-16 flex items-center justify-between px-4 md:px-6 z-20 relative">
+                <h2 class="text-lg md:text-xl font-bold text-gray-800 tracking-tight truncate">Pengaturan Akun</h2>
                 <div class="flex items-center gap-4">
-                    <div class="relative ml-4" x-data="{ open: false }">
+                    <div class="relative" x-data="{ open: false }">
                         <button @click="open = !open" class="flex items-center gap-3 focus:outline-none transition">
                             <div class="text-right hidden md:block">
                                 <div class="text-sm font-semibold text-gray-800">{{ Auth::user()->name }}</div>
                                 <div class="text-xs text-gray-500 uppercase">{{ Auth::user()->role }}</div>
                             </div>
                             <div
-                                class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center border-2 border-white shadow-sm overflow-hidden ring-2 ring-transparent hover:ring-blue-200 transition">
+                                class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-blue-100 flex items-center justify-center border-2 border-white shadow-sm overflow-hidden">
                                 <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=2563EB&color=fff"
                                     class="w-full h-full object-cover">
                             </div>
@@ -49,111 +49,102 @@
                 </div>
             </header>
 
-            <div class="flex-1 overflow-y-auto p-8" x-data="{ activeTab: 'profil' }">
+            <div class="flex-1 overflow-y-auto p-4 md:p-8" x-data="{ activeTab: 'profil' }">
 
                 <div class="max-w-5xl mx-auto">
-                    <h1 class="text-2xl font-bold text-gray-900 mb-6">Pengaturan</h1>
 
                     @if (session('success'))
                         <div
-                            class="mb-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative">
+                            class="mb-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl relative text-sm">
                             <strong class="font-bold">Berhasil!</strong> {{ session('success') }}
-                        </div>
-                    @endif
-                    @if ($errors->any())
-                        <div class="mb-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
-                            <ul class="list-disc pl-5">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
                         </div>
                     @endif
 
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
 
-                        <div class="md:col-span-1 space-y-1">
+                        <div
+                            class="md:col-span-1 flex md:flex-col overflow-x-auto md:overflow-x-visible pb-2 md:pb-0 gap-1 md:gap-1 snap-x">
                             <button @click="activeTab = 'profil'"
                                 :class="activeTab === 'profil' ? 'bg-blue-50 text-blue-700 font-semibold' :
                                     'text-gray-600 hover:bg-gray-100'"
-                                class="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition text-left">
-                                <i class="fas fa-user-circle w-5"></i> Profil Saya
+                                class="flex-shrink-0 md:w-full flex items-center gap-3 px-4 py-3 rounded-lg transition text-left text-sm snap-start">
+                                <i class="fas fa-user-circle w-5"></i> Profil
                             </button>
                             <button @click="activeTab = 'keamanan'"
                                 :class="activeTab === 'keamanan' ? 'bg-blue-50 text-blue-700 font-semibold' :
                                     'text-gray-600 hover:bg-gray-100'"
-                                class="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition text-left">
+                                class="flex-shrink-0 md:w-full flex items-center gap-3 px-4 py-3 rounded-lg transition text-left text-sm snap-start">
                                 <i class="fas fa-lock w-5"></i> Keamanan
                             </button>
                             <button @click="activeTab = 'notifikasi'"
                                 :class="activeTab === 'notifikasi' ? 'bg-blue-50 text-blue-700 font-semibold' :
                                     'text-gray-600 hover:bg-gray-100'"
-                                class="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition text-left">
+                                class="flex-shrink-0 md:w-full flex items-center gap-3 px-4 py-3 rounded-lg transition text-left text-sm snap-start">
                                 <i class="fas fa-bell w-5"></i> Notifikasi
                             </button>
                         </div>
 
                         <div class="md:col-span-3">
-
                             <form action="{{ route('admin.pengaturan.update') }}" method="POST">
                                 @csrf
                                 @method('PATCH')
 
-                                <div x-show="activeTab === 'profil'" class="space-y-6" style="display: none;">
-                                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sm:p-8">
+                                <div x-show="activeTab === 'profil'" x-transition class="space-y-6">
+                                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-8">
                                         <div class="mb-6 border-b border-gray-100 pb-4">
-                                            <h3 class="text-lg font-bold text-gray-800">Profil Saya</h3>
-                                            <p class="text-sm text-gray-500">Kelola informasi profil pribadi Anda.</p>
+                                            <h3 class="text-base md:text-lg font-bold text-gray-800">Profil Saya</h3>
+                                            <p class="text-xs text-gray-500">Kelola informasi profil pribadi Anda.</p>
                                         </div>
 
                                         <div
-                                            class="flex items-center gap-6 mb-8 p-4 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                                            class="flex flex-col sm:flex-row items-center gap-6 mb-8 p-4 bg-gray-50 rounded-xl border border-dashed border-gray-200">
                                             <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=2563EB&color=fff&size=128"
-                                                class="w-20 h-20 rounded-full border-4 border-white shadow-sm">
-                                            <div>
+                                                class="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-white shadow-sm">
+                                            <div class="text-center sm:text-left">
                                                 <h4 class="font-semibold text-gray-800 text-sm">Foto Profil</h4>
-                                                <div class="flex gap-2 mt-2">
-                                                    <button type="button"
-                                                        class="px-3 py-1.5 bg-white border border-gray-300 text-gray-400 text-xs font-medium rounded cursor-not-allowed">Upload</button>
-                                                </div>
+                                                <p class="text-[10px] text-gray-400 mb-2">Avatar otomatis berdasarkan
+                                                    nama</p>
+                                                <button type="button" disabled
+                                                    class="px-3 py-1.5 bg-gray-200 text-gray-400 text-xs font-medium rounded cursor-not-allowed">Ganti
+                                                    Foto</button>
                                             </div>
                                         </div>
 
-                                        <div class="grid grid-cols-1 gap-6">
+                                        <div class="grid grid-cols-1 gap-4 md:gap-6">
                                             <div>
                                                 <label class="block text-sm font-medium text-gray-700 mb-1">Nama
                                                     Lengkap</label>
                                                 <input type="text" name="name" value="{{ Auth::user()->name }}"
-                                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-200 outline-none">
+                                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-200 outline-none text-sm">
                                             </div>
                                             <div>
                                                 <label
                                                     class="block text-sm font-medium text-gray-700 mb-1">Email</label>
                                                 <input type="email" value="{{ Auth::user()->email }}" disabled
-                                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-500 cursor-not-allowed">
+                                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-500 cursor-not-allowed text-sm">
                                             </div>
                                             <div>
                                                 <label class="block text-sm font-medium text-gray-700 mb-1">No. HP
                                                     (Opsional)</label>
                                                 <input type="text" name="no_hp" placeholder="08..."
-                                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-200 outline-none">
+                                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-200 outline-none text-sm">
                                             </div>
                                         </div>
 
                                         <div class="mt-6 flex justify-end">
                                             <button type="submit"
-                                                class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">Simpan
-                                                Profil</button>
+                                                class="w-full sm:w-auto px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-sm transition">
+                                                Simpan Profil
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div x-show="activeTab === 'keamanan'" style="display: none;">
-                                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sm:p-8">
+                                <div x-show="activeTab === 'keamanan'" x-transition style="display: none;">
+                                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-8">
                                         <div class="mb-6 border-b border-gray-100 pb-4">
-                                            <h3 class="text-lg font-bold text-gray-800">Keamanan</h3>
-                                            <p class="text-sm text-gray-500">Perbarui kata sandi akun Anda demi
-                                                keamanan.</p>
+                                            <h3 class="text-base md:text-lg font-bold text-gray-800">Keamanan</h3>
+                                            <p class="text-xs text-gray-500">Perbarui kata sandi secara berkala.</p>
                                         </div>
 
                                         <input type="hidden" name="name" value="{{ Auth::user()->name }}">
@@ -164,68 +155,70 @@
                                                     Baru</label>
                                                 <input type="password" name="password"
                                                     placeholder="Minimal 8 karakter"
-                                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-200 outline-none">
+                                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-200 outline-none text-sm">
                                             </div>
                                             <div>
                                                 <label class="block text-sm font-medium text-gray-700 mb-1">Ulangi
-                                                    Password Baru</label>
+                                                    Password</label>
                                                 <input type="password" name="password_confirmation"
-                                                    placeholder="Ketik ulang password"
-                                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-200 outline-none">
+                                                    placeholder="Konfirmasi password"
+                                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-200 outline-none text-sm">
                                             </div>
                                         </div>
 
                                         <div class="mt-6 flex justify-end">
                                             <button type="submit"
-                                                class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-gray-800 font-medium">Update
-                                                Password</button>
+                                                class="w-full sm:w-auto px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-sm transition">
+                                                Update Password
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </form>
 
-                            <div x-show="activeTab === 'notifikasi'" style="display: none;">
-                                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sm:p-8">
+                            <div x-show="activeTab === 'notifikasi'" x-transition style="display: none;">
+                                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-8">
                                     <div class="mb-6 border-b border-gray-100 pb-4">
-                                        <h3 class="text-lg font-bold text-gray-800">Preferensi Notifikasi</h3>
-                                        <p class="text-sm text-gray-500">Atur notifikasi apa saja yang ingin Anda
-                                            terima.</p>
+                                        <h3 class="text-base md:text-lg font-bold text-gray-800">Preferensi Notifikasi
+                                        </h3>
+                                        <p class="text-xs text-gray-500">Atur notifikasi yang masuk ke email Anda.</p>
                                     </div>
-                                    <div class="space-y-4">
-                                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                    <div class="space-y-3">
+                                        <div
+                                            class="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100">
                                             <div>
-                                                <h4 class="text-sm font-semibold text-gray-800">Email Aduan Baru</h4>
-                                                <p class="text-xs text-gray-500">Terima email saat ada mahasiswa
-                                                    melapor.</p>
+                                                <h4 class="text-xs md:text-sm font-semibold text-gray-800">Email Aduan
+                                                    Baru</h4>
+                                                <p class="text-[10px] text-gray-500">Notifikasi saat ada aduan masuk.
+                                                </p>
                                             </div>
-                                            <label class="relative inline-flex items-center cursor-pointer">
+                                            <label
+                                                class="relative inline-flex items-center cursor-pointer scale-90 md:scale-100">
                                                 <input type="checkbox" checked class="sr-only peer">
                                                 <div
-                                                    class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600">
+                                                    class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-600 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all">
                                                 </div>
                                             </label>
                                         </div>
-                                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                        <div
+                                            class="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100">
                                             <div>
-                                                <h4 class="text-sm font-semibold text-gray-800">Email Pelayanan</h4>
-                                                <p class="text-xs text-gray-500">Terima email saat ada pengajuan
-                                                    fasilitas.</p>
+                                                <h4 class="text-xs md:text-sm font-semibold text-gray-800">Email
+                                                    Pelayanan</h4>
+                                                <p class="text-[10px] text-gray-500">Notifikasi saat ada pengajuan
+                                                    baru.</p>
                                             </div>
-                                            <label class="relative inline-flex items-center cursor-pointer">
+                                            <label
+                                                class="relative inline-flex items-center cursor-pointer scale-90 md:scale-100">
                                                 <input type="checkbox" class="sr-only peer">
                                                 <div
-                                                    class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600">
+                                                    class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-600 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all">
                                                 </div>
                                             </label>
                                         </div>
-                                    </div>
-                                    <div class="mt-6 text-right">
-                                        <span class="text-xs text-gray-400 italic">*Fitur notifikasi ini hanya tampilan
-                                            (demo).</span>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>

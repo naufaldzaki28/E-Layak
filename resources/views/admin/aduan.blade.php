@@ -20,20 +20,22 @@
 
         @include('sidebar')
 
-        <main class="flex-1 flex flex-col overflow-hidden bg-gray-50">
+        <main class="flex-1 flex flex-col overflow-hidden bg-gray-50 lg:ml-[260px] transition-all duration-300">
 
-            <header class="bg-white shadow-sm h-16 flex items-center justify-between px-6 z-20 relative">
-                <h2 class="text-xl font-bold text-gray-800 tracking-tight">Kelola Aduan Fasilitas</h2>
+            <header class="bg-white shadow-sm h-16 flex items-center justify-between px-4 md:px-6 z-20 relative">
+                <h2 class="text-lg md:text-xl font-bold text-gray-800 tracking-tight truncate">Kelola Aduan Fasilitas
+                </h2>
 
                 <div class="flex items-center gap-4">
-                    <div class="relative ml-4" x-data="{ open: false }">
-                        <button @click="open = !open" class="flex items-center gap-3 focus:outline-none transition">
-                            <div class="text-right hidden md:block">
+                    <div class="relative" x-data="{ open: false }">
+                        <button @click="open = !open"
+                            class="flex items-center gap-2 md:gap-3 focus:outline-none transition">
+                            <div class="text-right hidden sm:block">
                                 <div class="text-sm font-semibold text-gray-800">{{ Auth::user()->name }}</div>
                                 <div class="text-xs text-gray-500 uppercase">{{ Auth::user()->role }}</div>
                             </div>
                             <div
-                                class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center border-2 border-white shadow-sm overflow-hidden ring-2 ring-transparent hover:ring-blue-200 transition">
+                                class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-blue-100 flex items-center justify-center border-2 border-white shadow-sm overflow-hidden">
                                 <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=2563EB&color=fff"
                                     class="w-full h-full object-cover">
                             </div>
@@ -50,12 +52,12 @@
                 </div>
             </header>
 
-            <div class="flex-1 overflow-y-auto p-8">
+            <div class="flex-1 overflow-y-auto p-4 md:p-8">
 
-                <div class="max-w-5xl mx-auto mb-8">
+                <div class="max-w-5xl mx-auto mb-6 md:mb-8">
                     <div class="relative">
                         <input type="text"
-                            class="block w-full pl-4 pr-3 py-3 border border-gray-300 rounded-xl focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                            class="block w-full pl-4 pr-10 py-2 md:py-3 border border-gray-300 rounded-xl focus:ring-blue-500 focus:border-blue-500 shadow-sm text-sm"
                             placeholder="Cari aduan fasilitas...">
                         <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                             <i class="fas fa-search text-gray-400"></i>
@@ -67,10 +69,10 @@
 
                     @forelse($aduan as $item)
                         <div
-                            class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 flex flex-col md:flex-row gap-6 items-start hover:shadow-md transition">
+                            class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 md:p-5 flex flex-col md:flex-row gap-4 md:gap-6 items-start hover:shadow-md transition">
 
                             <div
-                                class="w-full md:w-48 h-32 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden border border-gray-200 relative group">
+                                class="w-full md:w-48 h-40 md:h-32 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden border border-gray-200 relative group">
                                 @if ($item->bukti_foto)
                                     <img src="{{ asset('storage/' . $item->bukti_foto) }}"
                                         class="w-full h-full object-cover" alt="Bukti">
@@ -85,34 +87,37 @@
                                 @endif
                             </div>
 
-                            <div class="flex-1 min-w-0">
+                            <div class="flex-1 min-w-0 w-full">
                                 <div class="flex flex-wrap items-center gap-2 mb-2">
-                                    <h3 class="text-lg font-bold text-gray-900 truncate">{{ $item->judul }}</h3>
+                                    <h3 class="text-base md:text-lg font-bold text-gray-900 truncate">
+                                        {{ $item->judul }}</h3>
 
-                                    @if ($item->status == 'pending')
-                                        <span
-                                            class="px-2 py-0.5 rounded text-xs font-bold bg-yellow-100 text-yellow-800 border border-yellow-200">
-                                            <i class="fas fa-clock mr-1"></i> Menunggu
-                                        </span>
-                                    @elseif($item->status == 'diproses')
-                                        <span
-                                            class="px-2 py-0.5 rounded text-xs font-bold bg-blue-100 text-blue-800 border border-blue-200">
-                                            <i class="fas fa-tools mr-1"></i> Diproses
-                                        </span>
-                                    @elseif($item->status == 'selesai')
-                                        <span
-                                            class="px-2 py-0.5 rounded text-xs font-bold bg-green-100 text-green-800 border border-green-200">
-                                            <i class="fas fa-check-circle mr-1"></i> Selesai
-                                        </span>
-                                    @elseif($item->status == 'ditolak')
-                                        <span
-                                            class="px-2 py-0.5 rounded text-xs font-bold bg-red-100 text-red-800 border border-red-200">
-                                            <i class="fas fa-times-circle mr-1"></i> Ditolak
-                                        </span>
-                                    @endif
+                                    <div class="flex-shrink-0">
+                                        @if ($item->status == 'pending')
+                                            <span
+                                                class="px-2 py-0.5 rounded text-[10px] md:text-xs font-bold bg-yellow-100 text-yellow-800 border border-yellow-200">
+                                                <i class="fas fa-clock mr-1"></i> Menunggu
+                                            </span>
+                                        @elseif($item->status == 'diproses')
+                                            <span
+                                                class="px-2 py-0.5 rounded text-[10px] md:text-xs font-bold bg-blue-100 text-blue-800 border border-blue-200">
+                                                <i class="fas fa-tools mr-1"></i> Diproses
+                                            </span>
+                                        @elseif($item->status == 'selesai')
+                                            <span
+                                                class="px-2 py-0.5 rounded text-[10px] md:text-xs font-bold bg-green-100 text-green-800 border border-green-200">
+                                                <i class="fas fa-check-circle mr-1"></i> Selesai
+                                            </span>
+                                        @elseif($item->status == 'ditolak')
+                                            <span
+                                                class="px-2 py-0.5 rounded text-[10px] md:text-xs font-bold bg-red-100 text-red-800 border border-red-200">
+                                                <i class="fas fa-times-circle mr-1"></i> Ditolak
+                                            </span>
+                                        @endif
+                                    </div>
                                 </div>
 
-                                <div class="flex items-center gap-4 text-sm text-gray-500 mb-3">
+                                <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-500 mb-3">
                                     <span class="flex items-center gap-1"><i class="fas fa-user"></i>
                                         {{ $item->user->name ?? 'Mahasiswa' }}</span>
                                     <span class="flex items-center gap-1"><i class="fas fa-map-marker-alt"></i>
@@ -121,48 +126,50 @@
                                         {{ $item->created_at->format('d M Y') }}</span>
                                 </div>
 
-                                <p class="text-gray-600 text-sm bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                <p
+                                    class="text-gray-600 text-xs md:text-sm bg-gray-50 p-3 rounded-lg border border-gray-100 line-clamp-3 md:line-clamp-none">
                                     {{ $item->deskripsi }}
                                 </p>
                             </div>
 
-                            <div class="flex flex-col gap-2 w-full md:w-auto min-w-[140px]">
+                            <div class="flex flex-row md:flex-col gap-2 w-full md:w-auto min-w-[140px] mt-2 md:mt-0">
 
                                 @if ($item->status == 'pending')
-                                    <form action="{{ route('admin.aduan.update', $item->id) }}" method="POST">
+                                    <form action="{{ route('admin.aduan.update', $item->id) }}" method="POST"
+                                        class="flex-1">
                                         @csrf
                                         @method('PATCH')
                                         <input type="hidden" name="status" value="diproses">
                                         <button type="submit"
-                                            class="w-full px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition shadow-sm flex items-center justify-center gap-2">
-                                            <i class="fas fa-hammer"></i> Proses
+                                            class="w-full px-4 py-2 bg-blue-600 text-white text-xs font-semibold rounded-lg hover:bg-blue-700 transition flex items-center justify-center gap-2">
+                                            <i class="fas fa-hammer"></i> <span class="md:inline">Proses</span>
                                         </button>
                                     </form>
 
                                     <form action="{{ route('admin.aduan.update', $item->id) }}" method="POST"
-                                        onsubmit="return confirm('Yakin ingin menolak laporan ini?')">
+                                        class="flex-1" onsubmit="return confirm('Yakin ingin menolak laporan ini?')">
                                         @csrf
                                         @method('PATCH')
                                         <input type="hidden" name="status" value="ditolak">
                                         <button type="submit"
-                                            class="w-full px-4 py-2 bg-white text-red-600 border border-red-200 text-sm font-semibold rounded-lg hover:bg-red-50 transition shadow-sm flex items-center justify-center gap-2">
-                                            <i class="fas fa-ban"></i> Tolak
+                                            class="w-full px-4 py-2 bg-white text-red-600 border border-red-200 text-xs font-semibold rounded-lg hover:bg-red-50 transition flex items-center justify-center gap-2">
+                                            <i class="fas fa-ban"></i> <span class="md:inline">Tolak</span>
                                         </button>
                                     </form>
                                 @elseif($item->status == 'diproses')
                                     <form action="{{ route('admin.aduan.update', $item->id) }}" method="POST"
-                                        onsubmit="return confirm('Tandai laporan ini sebagai selesai?')">
+                                        class="w-full" onsubmit="return confirm('Tandai laporan ini sebagai selesai?')">
                                         @csrf
                                         @method('PATCH')
                                         <input type="hidden" name="status" value="selesai">
                                         <button type="submit"
-                                            class="w-full px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition shadow-sm flex items-center justify-center gap-2">
+                                            class="w-full px-4 py-2 bg-green-600 text-white text-xs font-semibold rounded-lg hover:bg-green-700 transition flex items-center justify-center gap-2">
                                             <i class="fas fa-check"></i> Selesai
                                         </button>
                                     </form>
                                 @else
                                     <button
-                                        class="w-full px-4 py-2 bg-gray-100 text-gray-400 border border-gray-200 text-sm font-semibold rounded-lg cursor-not-allowed flex items-center justify-center gap-2"
+                                        class="w-full px-4 py-2 bg-gray-100 text-gray-400 border border-gray-200 text-xs font-semibold rounded-lg cursor-not-allowed flex items-center justify-center gap-2"
                                         disabled>
                                         <i class="fas fa-lock"></i> Terkunci
                                     </button>
@@ -178,10 +185,6 @@
                     @endforelse
 
                 </div>
-
-                <div class="max-w-5xl mx-auto mt-6">
-                </div>
-
             </div>
         </main>
     </div>

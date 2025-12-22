@@ -8,10 +8,10 @@ use App\Models\Aduan;    // Dulu: AduanFasilitas
 use App\Models\Layanan;  // Dulu: PelayananKampus
 // -----------------------------------------
 use App\Models\PesanBantuan;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 class AdminController extends Controller
 {
@@ -109,26 +109,25 @@ class AdminController extends Controller
     }
 
     public function downloadSurat($id)
-{
-    // Ambil data aduan/layanan beserta usernya
-    // Sesuaikan nama model kamu (misal: Aduan atau Layanan)
-    $data = \App\Models\Layanan::with('user')->findOrFail($id); 
-
-    // Jika statusnya belum Success, jangan kasih download (opsional)
-    if($data->status !== 'Success') {
-        return back()->with('error', 'Surat hanya tersedia untuk permohonan yang disetujui.');
-    }
-
-    $pdf = Pdf::loadView('admin.surat_pdf', compact('data'));
-    
-    // Set kertas A4
-    $pdf->setPaper('A4', 'portrait');
-
-    return $pdf->download('Surat_Keterangan_'.$data->user->nim.'.pdf');
-}
-    public function bantuan()
     {
-        return view('admin.bantuan');
+        // Cek di Layanan dulu
+        $data = \App\Models\Layanan::with('user')->find($id);
+
+        // Jika tidak ada di layanan, cek di Aduan
+        if (! $data) {
+            $data = \App\Models\Aduan::with('user')->findOrFail($id);
+        }
+
+        // Ubah pengecekan status agar sesuai dengan database (huruf kecil)
+        if (! in_array($data->status, ['disetujui', 'selesai'])) {
+            return back()->with('error', 'Surat hanya tersedia untuk permohonan yang disetujui.');
+        }
+
+        // Pastikan path view benar: folder admin, file surat_pdf.blade.php
+        $pdf = Pdf::loadView('admin.surat_pdf', compact('data'));
+        $pdf->setPaper('A4', 'portrait');
+
+        return $pdf->download('Surat_Keterangan_'.$data->user->nim.'.pdf');
     }
 
     // --- FUNGSI KIRIM PESAN ---
@@ -149,7 +148,7 @@ class AdminController extends Controller
 
         PesanBantuan::create($dataPesan);
 
-    Mail::to('dnaufal283@gmail.com')->send(new NotifikasiBantuan($dataPesan));
+        Mail::to('dnaufal283@gmail.com')->send(new NotifikasiBantuan($dataPesan));
 
         return redirect()->back()->with('success', 'Pesan terkirim!');
     }
