@@ -5,6 +5,7 @@ use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+use Illuminate\Support\Facades\Artisan; 
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 /*
