@@ -58,6 +58,7 @@ Route::middleware(['auth'])->group(function () {
     // Pengaturan Admin (Khusus Admin)
     Route::get('/admin/pengaturan', [AdminController::class, 'pengaturan'])->name('admin.pengaturan');
     Route::patch('/admin/pengaturan/update', [AdminController::class, 'updateProfil'])->name('admin.pengaturan.update');
+    Route::get('/admin/laporan/{id}/download', [AdminController::class, 'downloadSurat'])->name('admin.laporan.download');
 
     // ====================================================
     // AREA MAHASISWA
