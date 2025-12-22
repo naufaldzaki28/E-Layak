@@ -153,6 +153,11 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Pesan terkirim!');
     }
 
+    public function bantuan()
+    {
+        return view('admin.bantuan');
+    }
+
     public function pengaturan()
     {
         return view('admin.pengaturan');
