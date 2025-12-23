@@ -131,8 +131,8 @@
     </div>
 
     <ul class="sidebar-menu">
-        <li><a href="{{ route('dashboard') }}"
-                class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Dashboard</a></li>
+        <li><a href="{{ route('admin.dashboard') }}"
+                class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">Dashboard</a></li>
         <li><a href="{{ route('admin.aduan') }}" class="{{ request()->routeIs('admin.aduan') ? 'active' : '' }}">Aduan
                 Fasilitas</a></li>
         <li><a href="/admin/layanan" class="{{ request()->is('admin/layanan*') ? 'active' : '' }}">Pelayanan Kampus</a>
