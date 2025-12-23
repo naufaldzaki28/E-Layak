@@ -2,6 +2,9 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
+    <link rel="manifest" href="{{ asset('manifest.json') }}"type="application/manifest+json">
+    <meta name="theme-color" content="#2563EB">
+    <link rel="apple-touch-icon" href="{{ asset('img/logo.png') }}">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>E-Layak Kampus</title>
@@ -133,6 +136,20 @@
     </div>
 
     <?= view('footer') ?>
+    <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", function() {
+                navigator.serviceWorker
+                    .register("{{ asset('sw.js') }}")
+                    .then(function(registration) {
+                        console.log("ServiceWorker registration successful");
+                    })
+                    .catch(function(err) {
+                        console.log("ServiceWorker registration failed: ", err);
+                    });
+            });
+        }
+    </script>
 
 </body>
 

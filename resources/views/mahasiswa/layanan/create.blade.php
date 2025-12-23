@@ -2,6 +2,9 @@
 <html lang="id">
 
 <head>
+    <link rel="manifest" href="{{ asset('manifest.json') }}"type="application/manifest+json">
+    <meta name="theme-color" content="#2563EB">
+    <link rel="apple-touch-icon" href="{{ asset('img/logo.png') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ajukan Layanan - E-Layak</title>
@@ -78,6 +81,20 @@
             </p>
         </div>
     </div>
+    <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", function() {
+                navigator.serviceWorker
+                    .register("{{ asset('sw.js') }}")
+                    .then(function(registration) {
+                        console.log("ServiceWorker registration successful");
+                    })
+                    .catch(function(err) {
+                        console.log("ServiceWorker registration failed: ", err);
+                    });
+            });
+        }
+    </script>
 
 </body>
 

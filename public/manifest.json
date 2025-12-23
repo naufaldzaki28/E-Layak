@@ -1,0 +1,39 @@
+{
+    "name": "E-Layak Kampus",
+    "short_name": "E-Layak",
+    "start_url": "/",
+    "background_color": "#ffffff",
+    "theme_color": "#2563EB",
+    "display": "standalone",
+    "description": "Sistem Elektronik Layanan dan Aduan Fasilitas Kampus",
+    "icons": [
+        {
+            "src": "/img/logo.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/img/logo.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "/img/screenshot-desktop.jpeg",
+            "sizes": "1280x720",
+            "type": "image/jpeg",
+            "form_factor": "wide",
+            "label": "Dashboard E-Layak"
+        },
+        {
+            "src": "/img/screenshot-mobile.jpeg",
+            "sizes": "390x828",
+            "type": "image/jpeg",
+            "form_factor": "narrow",
+            "label": "Dashboard E-Layak"
+        }
+    ]
+}

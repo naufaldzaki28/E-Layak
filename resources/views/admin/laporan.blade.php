@@ -2,11 +2,13 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
+    <link rel="manifest" href="{{ asset('manifest.json') }}"type="application/manifest+json">
+    <meta name="theme-color" content="#2563EB">
+    <link rel="apple-touch-icon" href="{{ asset('img/logo.png') }}">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <title>Laporan - E-Layak</title>
-
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -149,6 +151,21 @@
             </div>
         </main>
     </div>
+    <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", function() {
+                navigator.serviceWorker
+                    .register("{{ asset('sw.js') }}")
+                    .then(function(registration) {
+                        console.log("ServiceWorker registration successful");
+                    })
+                    .catch(function(err) {
+                        console.log("ServiceWorker registration failed: ", err);
+                    });
+            });
+        }
+    </script>
+
 </body>
 
 </html>
